@@ -2,7 +2,7 @@ let radius;
 let x = [];
 let y = [];
 let xoff;
-let ball_counts = 7;
+let ball_counts = 3;
 let wave_counts = 2;
 
 
@@ -13,9 +13,9 @@ function setup() {
   noStroke();
   ellipseMode(RADIUS); //ellipseを半径で指定
   frameRate(5);
-  for (let i = 0; i < ball_counts + 1; i++) {
-    x[i] = random(0, window.innerWidth);
-    y[i] = random(0, innerHeight);
+  for (let i = 0; i < ball_counts + 1; i++) { //初期位置設定
+    x[i] = random(0, width);
+    y[i] = random(0, height);
   }
 }
 function draw() {
@@ -30,12 +30,16 @@ function draw() {
 function drawGradient(index) {
   let h = random(0, 360);
   noStroke();
+  for (let i = 0; i < ball_counts + 1; i++) { //玉の位置ノイズ
+    x[i] = x[i] + (noise(0.001) * 10 * random(-4,4));
+    y[i] = y[i] + (noise(0.001) * 10 * random(-4,4));
+  }
   for (let r = radius; r > 0; --r) {
     xoff = xoff + 0.01;
     let nx = noise(0.02 * width);
     let ny = noise(0.02 * height);
     fill(h, 90, 90);
-    ellipse((x[index] + random(-20, 20)) % width, (y[index] + random(-20, 20)) % height, r, r);
+    ellipse((x[index] + random(-20, 20)) % width, (y[index] + random(-20, 20)) % height, r+(width / 8), r+(width / 8));//r+(width / 8)
     h = (h + 1) % 360;
   }
 }
